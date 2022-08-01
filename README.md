@@ -9,10 +9,9 @@ About PredictIt:
 > political events by letting you trade shares on everything from the outcome of an
 > election to a Supreme Court decision to major world events.
 >
-> Taking part in PredictIt is simple and easy. Pick an event you know something about > and see how the market is pricing the chance it will take place. Do you think other > traders have it right? Or do you have the knowledge to beat the crowd?
+> Taking part in PredictIt is simple and easy. Pick an event you know something about > and see how the market is pricing the chance it will take place. Do you think other traders have it right? Or do you have the knowledge to beat the crowd?
 >
-> Make your predictions when most people disagree with you and the price is low. When > the market moves in your direction, the value of your shares will rise. It’s up to
-> you to decide whether to cash in or hang on until the market closes.
+> Make your predictions when most people disagree with you and the price is low. When > the market moves in your direction, the value of your shares will rise. It’s up to you to decide whether to cash in or hang on until the market closes.
 
 
 Possible API's to use:
