@@ -11,8 +11,15 @@ About PredictIt:
 >
 > Make your predictions when most people disagree with you and the price is low. When > the market moves in your direction, the value of your shares will rise. It’s up to you to decide whether to cash in or hang on until the market closes.
 
-
 Possible API's to use:
 - The Odds Api (Sports betting odds)
 - Reddit (posts, comments, sentiment)
 - Stripe (payment processing for token purchases)
+
+    docker run -d \
+        --name postgres-whataretheodds \
+        -e POSTGRES_USER=postgres \
+        -e POSTGRES_PASSWORD=kjb@TBbjk2g23 \
+        -e POSTGRES_DB=whataretheodds \
+        -p 5432:5432 \
+        postgres
