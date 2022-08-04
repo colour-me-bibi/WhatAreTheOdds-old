@@ -176,5 +176,8 @@ DJOSER = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 AUTH_USER_MODEL = "core.UserAccount"
+
+CRONJOBS = [
+    ('0 0 * * *', 'core.cron.track_price_history'),
+]

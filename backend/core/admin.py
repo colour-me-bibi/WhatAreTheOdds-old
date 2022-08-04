@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Contract, Market, Offer, UserAccount
+
+admin.site.register(UserAccount)
+admin.site.register(Market)
+admin.site.register(Contract)
+admin.site.register(Offer)

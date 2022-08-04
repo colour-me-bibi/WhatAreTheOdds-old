@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 
-from .models import Scenario
+# from .models import Scenario
 
 user = get_user_model()
 
@@ -13,7 +13,7 @@ class UserCreateSerializer(UserCreateSerializer):
         fields = ("id", "email", "name", "password")
 
 
-class ScenarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Scenario
-        fields = '__all__'
+# class ScenarioSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Scenario
+#         fields = '__all__'

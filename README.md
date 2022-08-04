@@ -23,3 +23,5 @@ Possible API's to use:
         -e POSTGRES_DB=whataretheodds \
         -p 5432:5432 \
         postgres
+
+    python manage.py crontab add
