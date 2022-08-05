@@ -22,7 +22,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
 if not DEBUG and not SECRET_KEY:
     raise Exception("DJANGO_SECRET_KEY environment variable is not set")
 
-ALLOWED_HOSTS = ["localhost:8001", "127.0.0.1:8001"]
+# ALLOWED_HOSTS = ["localhost:8001", "127.0.0.1:8001"]  # doesn't work
+ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:8001", "http://127.0.0.1:8001"]
 
 # ALLOWED_HOSTS = ["whataretheodds.com", "www.whataretheodds.com"]
