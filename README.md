@@ -15,3 +15,6 @@ Possible API's to use:
 - The Odds Api (Sports betting odds)
 - Reddit (posts, comments, sentiment)
 - Stripe (payment processing for token purchases)
+
+Run this application!
+`docker-compose up --build`
