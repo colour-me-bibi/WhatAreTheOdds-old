@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf ../backend/build && tsc && vite build && cp -r dist ../backend/build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

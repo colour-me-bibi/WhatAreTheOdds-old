@@ -1,0 +1,63 @@
+version: '3'
+services:
+
+  # two networks, one backend and one frontend
+
+  frontend:
+    container_name: whataretheodds-frontend
+    build: ./frontend
+    ports:
+      - 5131:80
+
+  backend:
+    container_name: whataretheodds-backend
+    build: ./backend
+
+  postgres:
+    container_name: whataretheodds-postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=whataretheodds
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  redis:
+    container_name: whataretheodds-redis
+    image: redis
+
+  # # NEW
+  # reverse_proxy:
+  #   container_name: auth-nginx
+  #   build: ./auth-nginx
+  #   volumes:
+  #     - ./auth-nginx/nginx.conf:/etc/nginx/nginx.conf
+  #   ports:  
+  #     - 80:80
+  #   depends_on:
+  #     - auth-django
+  #     - auth-react
+  # auth-django:
+  #   tty: true
+  #   container_name: auth-django
+  #   build: ./authDjango
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - ./authDjango:/code
+  #   # ports:
+  #   #   - 8000:8000
+  #   # NEW
+  #   expose:
+  #     - 8000
+  # auth-react:
+  #   tty: true
+  #   container_name: auth-react
+  #   build: ./auth-react
+  #   command: npm start
+  #   # ports:
+  #   #  - 3000:3000
+  #   # NEW
+  #   expose:
+  #     - 3000
+  #   image: no-react
+  #   volumes:
+  #     - ./auth-react:/code

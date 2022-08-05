@@ -13,15 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.shortcuts import render
-from django.urls import path, include, re_path
-
-
-def react_app(request):
-    return render(request, 'index.html')
+from django.urls import path, include
 
 
 urlpatterns = [
     path("api/", include("core.urls")),
-    re_path(r"^.*", react_app),
 ]
