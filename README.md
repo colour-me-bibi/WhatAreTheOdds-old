@@ -16,4 +16,15 @@ Possible API's to use:
 - Reddit (posts, comments, sentiment)
 - Stripe (payment processing for token purchases)
 
-Run this application! `docker-compose up --build`
+## Build and Run this project yourself with Docker!
+    git clone https://github.com/colour-me-bibi/WhatAreTheOdds.git
+    cd WhatAreTheOdds
+
+    cp .env-example .env
+    
+    <!-- Environment variables are set with the .env file in this directory -->
+    <!-- Make changes to the .env file as you see fit -->
+
+    docker compose up
+
+    <!-- Go to localhost or 127.0.0.1 in your browser to use the running application! -->
