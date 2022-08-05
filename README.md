@@ -16,5 +16,4 @@ Possible API's to use:
 - Reddit (posts, comments, sentiment)
 - Stripe (payment processing for token purchases)
 
-Run this application!
-`docker-compose up --build`
+Run this application! `docker-compose up --build`

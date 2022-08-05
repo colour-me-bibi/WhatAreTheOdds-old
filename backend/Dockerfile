@@ -9,6 +9,8 @@ COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 COPY . /app/
 
+# TODO migrate and create superuser
+
 EXPOSE 8000 5432 6379
 
 CMD [ "/usr/bin/supervisord", "-c", "supervisord.conf" ]
