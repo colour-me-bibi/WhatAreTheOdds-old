@@ -3,14 +3,20 @@ services:
 
   # TODO two networks, one backend and one frontend
 
+  # python manage.py migrate
+  # python manage.py createsuperuser OR loaddata
+  # python manage.py collectstatic
+
   frontend:
     container_name: whataretheodds-frontend
     build: ./frontend
     ports:
       - ${HTTP_PORT:-80}:80
-      - ${HTTPS_PORT:-443}:443
+      # - ${HTTPS_PORT:-443}:443
     volumes:
       - django-staticfiles:/usr/share/nginx/html/static
+    depends_on:
+      - backend
 
   backend:
     container_name: whataretheodds-backend
@@ -19,6 +25,9 @@ services:
       - .env
     volumes:
       - django-staticfiles:/app/static
+    depends_on:
+      - postgres
+      - redis
 
   postgres:
     container_name: whataretheodds-postgres

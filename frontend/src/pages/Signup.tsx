@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -8,6 +7,8 @@ interface Props {}
 
 const Signup: React.FC<Props> = () => {
   const navigate = useNavigate();
+
+  if (localStorage.getItem("token")) navigate("/");
 
   const formik = useFormik({
     initialValues: {
@@ -29,19 +30,21 @@ const Signup: React.FC<Props> = () => {
         .required("Required"),
     }),
     onSubmit: (values) =>
-      fetch("http://127.0.0.1/api/auth/registration/", {
+      fetch("http://localhost:8000/api/auth/registration/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          navigate("/login", {
-            replace: true,
-            state: { message: data.message }, // TODO change this to be useful
-          });
-        }),
+        body: JSON.stringify(
+          Object.assign(values, {
+            password1: values.password,
+            password2: values.confirmPassword,
+          })
+        ),
+      }).then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) return Promise.reject(data);
+        localStorage.setItem("token", data.key);
+        navigate("/", { replace: true });
+      }),
   });
 
   return (
@@ -137,7 +140,7 @@ const Signup: React.FC<Props> = () => {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
           Sign Up
         </button>
       </form>

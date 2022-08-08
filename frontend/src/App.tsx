@@ -1,30 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./hocs/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Activate from "./pages/Activate";
-import ResetPassword from "./pages/ResetPassword";
-import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import Navbar from "@/components/Navbar";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import Profile from "@/pages/Profile";
+import Dashboard from "@/pages/Dashboard";
+import Markets from "@/pages/Markets";
+import CreateMarket from "@/pages/CreateMarket";
+import Leaderboards from "@/pages/Leaderboards";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Router>
-      <Layout>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Navbar />
         <Routes>
+          {/* <Route path='*' element={<NotFound />} /> */}
+
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/password/reset/confirm/:uid/:token"
-            element={<ResetPasswordConfirm />}
-          />
-          <Route path="/activate/:uid/:token" element={<Activate />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/markets" element={<Markets />} />
+          <Route path="/markets/new" element={<CreateMarket />} />
+          <Route path="/leaderboards" element={<Leaderboards />} />
         </Routes>
-      </Layout>
-    </Router>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

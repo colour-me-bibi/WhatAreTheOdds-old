@@ -28,6 +28,7 @@ class Market(models.Model):
     prompt = models.CharField(max_length=255)
     # slug = models.SlugField(max_length=255, unique=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    projected_end = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.prompt
@@ -38,7 +39,6 @@ class Contract(models.Model):
     name = models.CharField(max_length=32, default="Latest Price")
     # slug = models.SlugField(max_length=32, unique=True)
     description = models.TextField()
-    projected_end = models.DateTimeField(blank=True, null=True)
 
     # updated every trade
     latest_yes_price = CentsField(blank=True, null=True)

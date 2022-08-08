@@ -16,13 +16,15 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", 'False').lower() in ('true', '1', 't')
 
-SECRET_KEY = "django-insecure-!c-=bs(wvry7)7o&z*!r7a+n^_s8fikvd#o8a+fa%@3i*hrk79"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
+if not DEBUG and not SECRET_KEY:
+    raise Exception("DJANGO_SECRET_KEY environment variable is not set")
 
 # ALLOWED_HOSTS = ["localhost:8001", "127.0.0.1:8001"]  # doesn't work
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8001", "http://127.0.0.1:8001"]
 
 # ALLOWED_HOSTS = ["whataretheodds.com", "www.whataretheodds.com"]
 # CSRF_TRUSTED_ORIGINS = ["https://whataretheodds.com", "https://www.whataretheodds.com"]
@@ -36,8 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
 
-    # Only for development
-    "corsheaders",
+    # TODO pip-autoremove django-cors-headers
 
     # Third-party apps
     "rest_framework",
@@ -59,15 +60,12 @@ SITE_ID = 1
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True  # TODO remove this
 
 ROOT_URLCONF = "backend.urls"
 
@@ -92,25 +90,13 @@ WSGI_APPLICATION = "backend.wsgi.application"  # TODO ?
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "whataretheodds",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv("POSTGRES_DB", "whataretheodds"),
+        "USER": os.getenv("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.getenv("POSTGRES_HOST", "postgres"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
-
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = "..."
-EMAIL_HOST_PASSWORD = "emxtzppgdqjidypz"
-EMAIL_HOST_USER = "bennyforeman1@gmail.com"
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -136,8 +122,6 @@ STATIC_ROOT = BASE_DIR / "static"
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/build/static")]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.TokenAuthentication"],
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
     # "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -162,5 +146,4 @@ CRONJOBS = [  # TODO replace with celery beat
     ("0 0 * * *", "core.cron.track_price_history"),
 ]
 
-# CELERY_BROKER_URL = "redis://" + os.getenv("REDIS_HOST", "edis") + ":" + os.getenv("REDIS_PORT", "6379")
-# CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_BROKER_URL = "redis://" + os.getenv("REDIS_HOST", "redis") + ":" + os.getenv("REDIS_PORT", "6379")
