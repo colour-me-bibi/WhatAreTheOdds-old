@@ -1,66 +1,99 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 interface Props {}
 
 const Login: React.FC<Props> = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .max(15, "Must be 15 characters or less")
+        .required("Required"),
+      password: Yup.string()
+        .min(6, "Must be at least 6 characters")
+        .required("Required"),
+    }),
+    onSubmit: (values) =>
+      fetch("http://127.0.0.1/api/auth/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          navigate("/", {
+            replace: true,
+            state: { message: data.message }, // TODO change this to be useful
+          });
+        }),
   });
-
-  const { email, password } = formData;
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData);
-
-    // login(email, password);
-  };
-
-  // Is the user authenticated?
-  // redirect to the home page
 
   return (
     <div className="container mt-5">
-      <h1>Sign In</h1>
-      <p>Sign in to your account</p>
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Email"
-            name="email"
-            value={email}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            minLength={6}
-            required
-          />
+      <h1>Login to your account!</h1>
+      <form onSubmit={formik.handleSubmit}>
+        <div className="container">
+          <div className="row row-cols-1">
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                className={`form-control ${
+                  formik.touched.username &&
+                  formik.errors.username &&
+                  "border-danger"
+                }`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
+              />
+              {formik.touched.username && formik.errors.username && (
+                <div className="text-danger">{formik.errors.username}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className={`form-control ${
+                  formik.touched.password &&
+                  formik.errors.password &&
+                  "border-danger"
+                }`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <div className="text-danger">{formik.errors.password}</div>
+              )}
+            </div>
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">
-          Login
+          Log In
         </button>
       </form>
       <p className="mt-3">
         Don't have an account? <Link to="/signup">Sign up</Link>
-      </p>
-      <p className="mt-3">
-        Forgot your password? <Link to="/reset-password">Reset Password</Link>
       </p>
     </div>
   );
